@@ -46,6 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let savedPLISTdata = try Data(contentsOf: fileURL)
         let savedConfig = try plistDecoder.decode(Config.self, from: savedPLISTdata)
             config = savedConfig
+            print("Config has been loaded from plist!")
         }
         catch {print(error)}
         //config = defaults.object(forKey: "config") as? Config ?? Constants.defaultConfig
@@ -57,10 +58,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("Date of last update not found")
         return false
         }
-        let daysSinceUpdate = Int(Date().timeIntervalSince(lastUpdate)) / 60*60*24
+        let daysSinceUpdate = Int(Date().timeIntervalSince(lastUpdate)) / (60*60*24)
         if daysSinceUpdate < 7 {
+            print("** configIsCurrent returning true: lastUpdate,daysSinceUpdate = \(lastUpdate), \(daysSinceUpdate) **")
             return true
         } else {
+            print("** configIsCurrent returning false: lastUpdate,daysSinceUpdate = \(lastUpdate), \(daysSinceUpdate) **")
             return false
         }
     }
