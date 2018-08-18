@@ -15,7 +15,6 @@ class LoginViewController: UIViewController {
     // MARK: Properties
     
     var appDelegate: AppDelegate!
-    var requestToken = RequestToken()
     var keyboardOnScreen = false
     
     // MARK: Outlets
@@ -58,19 +57,20 @@ class LoginViewController: UIViewController {
         } else {
             setUIEnabled(false)
             
-            /*
-                Steps for Authentication...
-                https://www.themoviedb.org/documentation/api/sessions
+            
+            // Steps for Authentication...
+            // https://www.themoviedb.org/documentation/api/sessions
                 
-                Step 1: Create a request token
-                Step 2: Ask the user for permission via the API ("login")
-                Step 3: Create a session ID
-                
-                Extra Steps...
-                Step 4: Get the user id ;)
-                Step 5: Go to the next view!            
-            */
+            // Step 1: Create a request token
             getRequestToken()
+            // Step 2: Ask the user for permission via the API ("login")
+            loginWithToken(self.appDelegate.requestToken.request_token!)
+            // Step 3: Create a session ID
+                
+            // Extra Steps...
+            // Step 4: Get the user id ;)
+            // Step 5: Go to the next view!
+            
         }
     }
     
@@ -108,8 +108,8 @@ class LoginViewController: UIViewController {
                 let retrievedData = Data(data!)
                 let newToken = try jsonDecoder.decode(RequestToken.self, from: retrievedData)
                 print("newToken = \(newToken)")
-                self.requestToken = newToken
-                if self.requestToken.success != true {
+                self.appDelegate.requestToken = newToken
+                if self.appDelegate.requestToken.success != true {
                     performUIUpdatesOnMain {
                         self.setUIEnabled(true)
                         self.debugTextLabel.text = "Could not get request token!"
@@ -117,11 +117,6 @@ class LoginViewController: UIViewController {
                 }
             }
             catch {print(error)}
-            
-            
-            
-            /* 5. Parse the data */
-            /* 6. Use the data! */
         }
 
         /* 7. Start the request */
