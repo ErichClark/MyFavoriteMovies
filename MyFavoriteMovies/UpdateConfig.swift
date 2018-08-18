@@ -40,7 +40,7 @@ extension AppDelegate {
         let task = appDelegate.sharedSession.dataTask(with: request as URLRequest) { (data, urlResponse, error) in
             
             /* 5. Parse the data, handle errors  */
-            NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error)
+            print("** Config request: \(NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error))")
             
             do {
                 let jsonDecoder = JSONDecoder()

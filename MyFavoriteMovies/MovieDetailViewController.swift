@@ -59,7 +59,7 @@ class MovieDetailViewController: UIViewController {
             /* 4A. Make the request */
             let task = appDelegate.sharedSession.dataTask(with: request as URLRequest) { (data, urlResponse, error) in
                 
-                NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error)
+                print("** favorite movies request: \(NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error))")
                 
                 /* 5A. Parse the data */
                 do {
@@ -97,7 +97,7 @@ class MovieDetailViewController: UIViewController {
                 /* 4B. Make the request */
                 let task = appDelegate.sharedSession.dataTask(with: request) { (data, urlResponse, error) in
                     
-                    NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error)
+                    print("** poster path request: \(NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error))")
                     
                     /* 5B. Parse the data */
                     // No need, the data is already raw image data.

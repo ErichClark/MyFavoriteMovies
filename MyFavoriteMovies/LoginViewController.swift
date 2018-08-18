@@ -101,7 +101,7 @@ class LoginViewController: UIViewController {
         /* 4. Make the request */
         let task = appDelegate.sharedSession.dataTask(with: request) { (data, urlResponse, error) in
             
-            self.testForNetworkErrors(data: data!, urlResponse: urlResponse!, error: error)
+            self.displayNetworkErrorsInDebugUI(data: data!, urlResponse: urlResponse!, error: error)
             
             do {
                 let jsonDecoder = JSONDecoder()
@@ -109,8 +109,15 @@ class LoginViewController: UIViewController {
                 let newToken = try jsonDecoder.decode(RequestToken.self, from: retrievedData)
                 print("newToken = \(newToken)")
                 self.requestToken = newToken
+                if self.requestToken.success != true {
+                    performUIUpdatesOnMain {
+                        self.setUIEnabled(true)
+                        self.debugTextLabel.text = "Could not get request token!"
+                    }
+                }
             }
             catch {print(error)}
+            
             
             
             /* 5. Parse the data */
@@ -270,13 +277,17 @@ private extension LoginViewController {
 }
 
 private extension LoginViewController {
-    func testForNetworkErrors(data: Data, urlResponse: URLResponse, error: Error?) {
-        NetworkErrorGuard(data: data, urlResponse: urlResponse, error: error)
+    func displayNetworkErrorsInDebugUI(data: Data, urlResponse: URLResponse, error: Error?) {
+        let message = NetworkErrorGuard(data: data, urlResponse: urlResponse, error: error)
         performUIUpdatesOnMain {
             self.setUIEnabled(true)
             if error != nil {
-                self.debugTextLabel.text = "Error is \(String(describing: error))"
-            } 
+                self.debugTextLabel.text = "Error is \(message)"
+            }
+//            else {
+//                self.debugTextLabel.text = "\(message)"
+//            }
+            
         }
         
     }

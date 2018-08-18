@@ -52,7 +52,7 @@ class GenreTableViewController: UITableViewController {
         /* 4. Make the request */
         let task = appDelegate.sharedSession.dataTask(with: request as URLRequest) { (data, urlResponse, error) in
             
-            NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error)
+            print("** movies request: \(NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error))")
             
             /* 5. Parse the data */
             do {
@@ -112,7 +112,7 @@ extension GenreTableViewController {
             /* 4. Make the request */
             let task = appDelegate.sharedSession.dataTask(with: request) { (data, urlResponse, error) in
                 
-                NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error)
+                print("** poster image request: \(NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error))")
                 
                 /* 5. Parse the data */
                 // No need, the data is already raw image data.
