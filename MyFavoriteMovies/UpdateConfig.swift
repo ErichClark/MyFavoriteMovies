@@ -17,8 +17,6 @@
 import UIKit
 import Foundation
 
-
-
 extension AppDelegate {
 
     func updateConfig() {
