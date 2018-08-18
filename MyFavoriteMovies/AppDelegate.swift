@@ -55,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var configIsCurrent: Bool {
         let defaults = UserDefaults.standard
         guard let lastUpdate = defaults.object(forKey: "lastUpdate") as! Date? else {
-        print("Date of last update not found")
+            print("configIsCurrent return false: Date of last update not found")
         return false
         }
         let daysSinceUpdate = Int(Date().timeIntervalSince(lastUpdate)) / (60*60*24)
