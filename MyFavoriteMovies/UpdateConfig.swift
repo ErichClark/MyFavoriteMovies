@@ -37,10 +37,10 @@ extension AppDelegate {
         
         print("*** request *** \(request)")
         /* 4. Make the request */
-        let task = appDelegate.sharedSession.dataTask(with: request as URLRequest) { (data, response, error) in
+        let task = appDelegate.sharedSession.dataTask(with: request as URLRequest) { (data, urlResponse, error) in
             
             /* 5. Parse the data, handle errors  */
-            NetworkErrorGuard(data: data, response: response!, error: error)
+            NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error)
             
             do {
                 let jsonDecoder = JSONDecoder()

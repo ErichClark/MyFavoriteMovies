@@ -57,9 +57,9 @@ class MovieDetailViewController: UIViewController {
             request.addValue("application/json", forHTTPHeaderField: "Accept")
             
             /* 4A. Make the request */
-            let task = appDelegate.sharedSession.dataTask(with: request as URLRequest) { (data, response, error) in
+            let task = appDelegate.sharedSession.dataTask(with: request as URLRequest) { (data, urlResponse, error) in
                 
-                NetworkErrorGuard(data: data, response: response!, error: error)
+                NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error)
                 
                 /* 5A. Parse the data */
                 do {
@@ -95,9 +95,9 @@ class MovieDetailViewController: UIViewController {
                 let request = URLRequest(url: url)
                 
                 /* 4B. Make the request */
-                let task = appDelegate.sharedSession.dataTask(with: request) { (data, response, error) in
+                let task = appDelegate.sharedSession.dataTask(with: request) { (data, urlResponse, error) in
                     
-                    NetworkErrorGuard(data: data, response: response!, error: error)
+                    NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error)
                     
                     /* 5B. Parse the data */
                     // No need, the data is already raw image data.

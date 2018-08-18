@@ -50,9 +50,9 @@ class GenreTableViewController: UITableViewController {
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
         /* 4. Make the request */
-        let task = appDelegate.sharedSession.dataTask(with: request as URLRequest) { (data, response, error) in
+        let task = appDelegate.sharedSession.dataTask(with: request as URLRequest) { (data, urlResponse, error) in
             
-            NetworkErrorGuard(data: data, response: response!, error: error)
+            NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error)
             
             /* 5. Parse the data */
             do {
@@ -110,9 +110,9 @@ extension GenreTableViewController {
             let request = URLRequest(url: url)
             
             /* 4. Make the request */
-            let task = appDelegate.sharedSession.dataTask(with: request) { (data, response, error) in
+            let task = appDelegate.sharedSession.dataTask(with: request) { (data, urlResponse, error) in
                 
-                NetworkErrorGuard(data: data, response: response!, error: error)
+                NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error)
                 
                 /* 5. Parse the data */
                 // No need, the data is already raw image data.

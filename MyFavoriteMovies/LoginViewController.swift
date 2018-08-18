@@ -15,6 +15,7 @@ class LoginViewController: UIViewController {
     // MARK: Properties
     
     var appDelegate: AppDelegate!
+    var requestToken = RequestToken()
     var keyboardOnScreen = false
     
     // MARK: Outlets
@@ -96,8 +97,21 @@ class LoginViewController: UIViewController {
         /* 2/3. Build the URL, Configure the request */
         let request = URLRequest(url: appDelegate.tmdbURLFromParameters(methodParameters as [String:AnyObject], withPathExtension: "/authentication/token/new"))
         
+        print("request token URL = \(request)")
         /* 4. Make the request */
-        let task = appDelegate.sharedSession.dataTask(with: request) { (data, response, error) in
+        let task = appDelegate.sharedSession.dataTask(with: request) { (data, urlResponse, error) in
+            
+            self.testForNetworkErrors(data: data!, urlResponse: urlResponse!, error: error)
+            
+            do {
+                let jsonDecoder = JSONDecoder()
+                let retrievedData = Data(data!)
+                let newToken = try jsonDecoder.decode(RequestToken.self, from: retrievedData)
+                print("newToken = \(newToken)")
+                self.requestToken = newToken
+            }
+            catch {print(error)}
+            
             
             /* 5. Parse the data */
             /* 6. Use the data! */
@@ -107,7 +121,7 @@ class LoginViewController: UIViewController {
         task.resume()
     }
     
-    private func loginWithToken(_ requestToken: String) {
+    private func loginWithToken(_ request_token: String) {
         
         /* TASK: Login, then get a session id */
         
@@ -119,7 +133,7 @@ class LoginViewController: UIViewController {
         /* 7. Start the request */
     }
     
-    private func getSessionID(_ requestToken: String) {
+    private func getSessionID(_ request_token: String) {
         
         /* TASK: Get a session ID, then store it (appDelegate.sessionID) and get the user's id */
         
@@ -252,5 +266,18 @@ private extension LoginViewController {
     
     func unsubscribeFromAllNotifications() {
         NotificationCenter.default.removeObserver(self)
+    }
+}
+
+private extension LoginViewController {
+    func testForNetworkErrors(data: Data, urlResponse: URLResponse, error: Error?) {
+        NetworkErrorGuard(data: data, urlResponse: urlResponse, error: error)
+        performUIUpdatesOnMain {
+            self.setUIEnabled(true)
+            if error != nil {
+                self.debugTextLabel.text = "Error is \(String(describing: error))"
+            } 
+        }
+        
     }
 }

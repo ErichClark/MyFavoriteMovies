@@ -8,15 +8,15 @@
 
 import Foundation
 
-func NetworkErrorGuard(data: Data?, response: URLResponse, error: Error?) {
+func NetworkErrorGuard(data: Data?, urlResponse: URLResponse, error: Error?) {
     /* GUARD: Was there an error? */
     guard (error == nil) else {
         print("There was an error with your request: \(error!)")
         return
     }
     
-    /* GUARD: Did we get a successful 2XX response? */
-    guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
+    /* GUARD: Did we get a successful 2XX urlResponse? */
+    guard let statusCode = (urlResponse as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
         print("Your request returned a status code other than 2xx!")
         return
     }
