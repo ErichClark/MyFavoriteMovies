@@ -31,7 +31,7 @@
         <scene sceneID="I3L-Xj-JLz">
             <objects>
                 <navigationController id="1fg-yN-lZg" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Sci-Fi" image="Genre Icon" id="BOQ-mZ-vf4"/>
+                    <tabBarItem key="tabBarItem" tag="878" title="Sci-Fi" image="Genre Icon" id="BOQ-mZ-vf4"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="UBm-Id-XyN">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -48,7 +48,7 @@
         <scene sceneID="TX8-Ot-v5G">
             <objects>
                 <navigationController id="SNV-U6-zVT" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="1" title="Comedy" image="Genre Icon" id="JUF-hT-q4C"/>
+                    <tabBarItem key="tabBarItem" tag="35" title="Comedy" image="Genre Icon" id="JUF-hT-q4C"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="nYP-5d-NoV">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -93,8 +93,11 @@
                             <outlet property="delegate" destination="JMU-Qr-lTI" id="Fta-Hh-vh5"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" tag="2" title="Action" image="Genre Icon" id="fpD-oG-X2H"/>
+                    <tabBarItem key="tabBarItem" tag="28" title="Action" image="Genre Icon" id="fpD-oG-X2H"/>
                     <navigationItem key="navigationItem" title="Action" id="nFi-sn-HEW"/>
+                    <connections>
+                        <outlet property="ActionTab" destination="fpD-oG-X2H" id="gBO-Qo-cr7"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="thY-Gg-Mm3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -190,6 +193,9 @@
                     </tableView>
                     <tabBarItem key="tabBarItem" tag="1" title="Comedy" image="Genre Icon" id="QGi-Hz-ycW"/>
                     <navigationItem key="navigationItem" title="Comedy" id="4yP-6g-Qu3"/>
+                    <connections>
+                        <outlet property="ComedyTab" destination="QGi-Hz-ycW" id="0q6-YD-SZV"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xTU-ig-QBR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -229,6 +235,9 @@
                     </tableView>
                     <tabBarItem key="tabBarItem" title="Sci-Fi" image="Genre Icon" id="4hQ-6t-fYz"/>
                     <navigationItem key="navigationItem" title="Sci-Fi" id="yJB-Db-gnj"/>
+                    <connections>
+                        <outlet property="SciFiTab" destination="4hQ-6t-fYz" id="zu1-kp-Kb9"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KRM-2g-Ss9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

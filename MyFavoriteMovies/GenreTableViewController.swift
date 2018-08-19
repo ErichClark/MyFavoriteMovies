@@ -15,12 +15,18 @@ class GenreTableViewController: UITableViewController {
     // MARK: Properties
     
     var appDelegate: AppDelegate!
-    var movies = Movies()
+    var movies = [Movie]()
     var genre = Genre()
-    var id: Int? = nil
+    var genreID: Int? = nil
+    var account = Account()
     var config = Constants.defaultConfig
 
+    // MARK: Tab Outlets
 
+    @IBOutlet weak var ActionTab: UITabBarItem!
+    @IBOutlet weak var SciFiTab: UITabBarItem!
+    @IBOutlet weak var ComedyTab: UITabBarItem!
+    
     // MARK: Life Cycle
     
     override func viewDidLoad() {
@@ -29,9 +35,13 @@ class GenreTableViewController: UITableViewController {
         // get the app delegate
         appDelegate = UIApplication.shared.delegate as! AppDelegate
         config = appDelegate.config!
-
+        account = appDelegate.account
+        
         // get the correct genre id
-        id = genre.id
+        let genreTitle = self.title!
+        genreID = GenrePageIDs[genreTitle]
+        print("genreTitle = \(String(describing: genreTitle)), number \(String(describing: genreID))")
+
         // create and set logout button
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .reply, target: self, action: #selector(logout))
     }
@@ -48,9 +58,9 @@ class GenreTableViewController: UITableViewController {
         ]
         
         /* 2/3. Build the URL, Configure the request */
-        let request = NSMutableURLRequest(url: appDelegate.tmdbURLFromParameters(methodParameters as [String:AnyObject], withPathExtension: "/genre/\(id!)/movies"))
+        let request = NSMutableURLRequest(url: appDelegate.tmdbURLFromParameters(methodParameters as [String:AnyObject], withPathExtension: "/genre/\(genreID!)/movies"))
         request.addValue("application/json", forHTTPHeaderField: "Accept")
-        
+        print("** genre request = \(request)")
         /* 4. Make the request */
         let task = appDelegate.sharedSession.dataTask(with: request as URLRequest) { (data, urlResponse, error) in
             
@@ -60,8 +70,9 @@ class GenreTableViewController: UITableViewController {
             do {
                 let jsonDecoder = JSONDecoder()
                 let retrievedData = Data(data!)
-                let movieResults = try jsonDecoder.decode(Movies.self, from: retrievedData)
-                self.movies = movieResults
+                let genreResults = try jsonDecoder.decode(Genre.self, from: retrievedData)
+                self.genre = genreResults
+                self.movies = self.genre.results!
             }
             catch {print(error)}
             
@@ -90,7 +101,7 @@ extension GenreTableViewController {
         
         // get cell type
         let cellReuseIdentifier = "MovieTableViewCell"
-        let movie = movies.movies![(indexPath as NSIndexPath).row]
+        let movie = movies[(indexPath as NSIndexPath).row]
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as UITableViewCell?
         
         // set cell defaults
@@ -137,14 +148,14 @@ extension GenreTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return movies.movies!.count
+        return movies.count
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         // push the movie detail view
         let controller = storyboard!.instantiateViewController(withIdentifier: "MovieDetailViewController") as! MovieDetailViewController
-        controller.movie = movies.movies![(indexPath as NSIndexPath).row]
+        controller.movie = movies[(indexPath as NSIndexPath).row]
         navigationController!.pushViewController(controller, animated: true)
     }
 }

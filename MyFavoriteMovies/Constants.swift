@@ -73,9 +73,9 @@ struct Constants {
      static let KeyboardDidHide: Selector = "keyboardDidHide:"
      }
      */
-    static let defaultGenres = [
-        Genre(id: 878, name: "Sci-Fi"),
-        Genre(id: 35, name: "Comedy"),
-        Genre(id: 28, name: "Action")]
+//    static let defaultGenres = [
+//        Genre(id: 878, name: "Sci-Fi"),
+//        Genre(id: 35, name: "Comedy"),
+//        Genre(id: 28, name: "Action")]
 }
 

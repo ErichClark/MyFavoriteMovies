@@ -8,13 +8,14 @@
 
 import Foundation
 
-struct Genres: Codable {
-    var genres: [Genre]?
-}
+var GenrePageIDs = ["SciFiTableViewController": 878,
+              "ComedyTableViewController": 35,
+              "ActionTableViewController": 28
+]
 
 struct Genre: Codable {
     var id: Int?
-    var name: String?
+    var page: Int?
+    var results: [Movie]?
 }
-
 
