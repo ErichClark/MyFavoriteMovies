@@ -37,10 +37,7 @@ class GenreTableViewController: UITableViewController {
         config = appDelegate.config!
         account = appDelegate.account
         
-        // get the correct genre id
-        let genreTitle = self.title!
-        genreID = GenrePageIDs[genreTitle]
-        print("genreTitle = \(String(describing: genreTitle)), number \(String(describing: genreID))")
+        
 
         // create and set logout button
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .reply, target: self, action: #selector(logout))
@@ -50,7 +47,16 @@ class GenreTableViewController: UITableViewController {
         
         super.viewWillAppear(animated)
         
-        /* TASK: Get movies by a genre id, then populate the table */
+        // Workaround - I added outlets to each individual
+        // genre page, and when they are not nil,
+        // that triggers the correct genreID.
+        if ActionTab != nil {
+            genreID = 28
+        } else if SciFiTab != nil {
+            genreID = 878
+        } else if ComedyTab != nil {
+            genreID = 35
+        }
         
         /* 1. Set the parameters */
         let methodParameters = [
@@ -60,11 +66,11 @@ class GenreTableViewController: UITableViewController {
         /* 2/3. Build the URL, Configure the request */
         let request = NSMutableURLRequest(url: appDelegate.tmdbURLFromParameters(methodParameters as [String:AnyObject], withPathExtension: "/genre/\(genreID!)/movies"))
         request.addValue("application/json", forHTTPHeaderField: "Accept")
-        print("** genre request = \(request)")
+        // print("** genre request = \(request)")
         /* 4. Make the request */
         let task = appDelegate.sharedSession.dataTask(with: request as URLRequest) { (data, urlResponse, error) in
             
-            print("** movies request: \(NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error))")
+            _ = NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error)
             
             /* 5. Parse the data */
             do {
@@ -73,6 +79,7 @@ class GenreTableViewController: UITableViewController {
                 let genreResults = try jsonDecoder.decode(Genre.self, from: retrievedData)
                 self.genre = genreResults
                 self.movies = self.genre.results!
+                // print("** genre loaded = \(String(describing: self.genreID))")
             }
             catch {print(error)}
             
@@ -125,7 +132,7 @@ extension GenreTableViewController {
             /* 4. Make the request */
             let task = appDelegate.sharedSession.dataTask(with: request) { (data, urlResponse, error) in
                 
-                print("** poster image request: \(NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error))")
+                _ = NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error)
                 
                 /* 5. Parse the data */
                 // No need, the data is already raw image data.

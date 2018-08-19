@@ -15,8 +15,9 @@ class FavoritesTableViewController: UITableViewController {
     // MARK: Properties
     
     var appDelegate = UIApplication.shared.delegate as! AppDelegate
-    var movies = Movies()
-    let config = Constants.defaultConfig
+    var movies = [Movie]()
+    var favorites = Favorites()
+    var config = Constants.defaultConfig
     
     // MARK: Life Cycle
     
@@ -25,7 +26,7 @@ class FavoritesTableViewController: UITableViewController {
         
         // get the app delegate
         appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let config = appDelegate.config
+        config = appDelegate.config!
         
         // create and set logout button
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .reply, target: self, action: #selector(logout))
@@ -44,8 +45,10 @@ class FavoritesTableViewController: UITableViewController {
         ]
         
         /* 2/3. Build the URL, Configure the request */
-        let request = NSMutableURLRequest(url: appDelegate.tmdbURLFromParameters(methodParameters as [String:AnyObject], withPathExtension: "/account/\(appDelegate.userID!)/favorite/movies"))
+        let request = NSMutableURLRequest(url: appDelegate.tmdbURLFromParameters(methodParameters as [String:AnyObject], withPathExtension: "/account/\(appDelegate.account.id!)/favorite/movies"))
         request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        print("** Request favorite movies = \(request)")
         
         /* 4. Make the request */
         let task = appDelegate.sharedSession.dataTask(with: request as URLRequest) { (data, urlResponse, error) in
@@ -56,8 +59,9 @@ class FavoritesTableViewController: UITableViewController {
             do {
                 let jsonDecoder = JSONDecoder()
                 let retrievedData = Data(data!)
-                let movieResults = try jsonDecoder.decode(Movies.self, from: retrievedData)
-                self.movies = movieResults
+                let favoritesResults = try jsonDecoder.decode(Favorites.self, from: retrievedData)
+                self.favorites = favoritesResults
+                self.movies = self.favorites.results!
             }
             catch {print(error)}
             
@@ -86,7 +90,7 @@ extension FavoritesTableViewController {
         
         // get cell type
         let cellReuseIdentifier = "FavoriteTableViewCell"
-        let movie = movies.movies![(indexPath as NSIndexPath).row]
+        let movie = movies[(indexPath as NSIndexPath).row]
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as UITableViewCell?
         
         // set cell defaults
@@ -133,14 +137,14 @@ extension FavoritesTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return movies.movies!.count
+        return movies.count
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         /* Push the movie detail view */
         let controller = storyboard!.instantiateViewController(withIdentifier: "MovieDetailViewController") as! MovieDetailViewController
-        controller.movie = movies.movies![(indexPath as NSIndexPath).row]
+        controller.movie = movies[(indexPath as NSIndexPath).row]
         navigationController!.pushViewController(controller, animated: true)
     }
 }

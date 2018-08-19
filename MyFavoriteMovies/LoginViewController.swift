@@ -99,7 +99,7 @@ class LoginViewController: UIViewController {
         /* 2/3. Build the URL, Configure the request */
         let request = URLRequest(url: appDelegate.tmdbURLFromParameters(methodParameters as [String:AnyObject], withPathExtension: "/authentication/token/new"))
         
-        print("request token URL = \(request)")
+        // print("request token URL = \(request)")
         /* 4. Make the request */
         let task = appDelegate.sharedSession.dataTask(with: request) { (data, urlResponse, error) in
             
@@ -109,7 +109,7 @@ class LoginViewController: UIViewController {
                 let jsonDecoder = JSONDecoder()
                 let retrievedData = Data(data!)
                 let newToken = try jsonDecoder.decode(RequestToken.self, from: retrievedData)
-                print("newToken = \(newToken)")
+                // print("newToken = \(newToken)")
                 self.appDelegate.requestToken = newToken
                 self.loginWithToken(self.appDelegate.requestToken.request_token!)
                 if self.appDelegate.requestToken.success != true {
@@ -139,7 +139,7 @@ class LoginViewController: UIViewController {
         /* 2/3. Build the URL, Configure the request */
         let request = URLRequest(url: appDelegate.tmdbURLFromParameters(methodPerameters as [String:AnyObject], withPathExtension: "/authentication/token/validate_with_login"))
         
-        print("*** URL permission authentication - \(request) ")
+        // print("*** URL permission authentication - \(request) ")
         /* 4. Make the request */
         let task = appDelegate.sharedSession.dataTask(with: request) {  (data, urlResponse, error) in
             
@@ -150,7 +150,7 @@ class LoginViewController: UIViewController {
                 let jsonDecoder = JSONDecoder()
                 let retrievedData = Data(data!)
                 let validationToken = try jsonDecoder.decode(Validate_With_Login.self, from: retrievedData)
-                print("*** validationToken = \(validationToken)")
+                // print("*** validationToken = \(validationToken)")
                 /* 6. Use the data! */
                 self.appDelegate.validate_with_login = validationToken
                 self.getSessionID(self.appDelegate.validate_with_login.request_token!)
@@ -163,7 +163,7 @@ class LoginViewController: UIViewController {
     }
     
     private func getSessionID(_ validation_token: String) {
-        print("** Tried to get session id with \(validation_token)")
+        // print("** Tried to get session id with \(validation_token)")
         /* TASK: Get a session ID, then store it (appDelegate.sessionID) and get the user's id */
         
         /* 1. Set the parameters */
@@ -173,7 +173,7 @@ class LoginViewController: UIViewController {
         // "/authentication/session/new"
         let request = URLRequest(url: appDelegate.tmdbURLFromParameters(methodPerameters as [String : AnyObject], withPathExtension: "/authentication/session/new"))
         /* 4. Make the request */
-        print("** URL request for session ID = \(request)")
+        // print("** URL request for session ID = \(request)")
         
         let task = appDelegate.sharedSession.dataTask(with: request) { (data, urlResponse, error) in
 
@@ -185,7 +185,7 @@ class LoginViewController: UIViewController {
                 let retrievedData = Data(data!)
                 let newSessionID = try jsonDecoder.decode(SessionID.self, from: retrievedData)
                 self.appDelegate.sessionID = newSessionID
-                print("** session id = \(String(describing: self.appDelegate.sessionID.session_id))")
+                // print("** session id = \(String(describing: self.appDelegate.sessionID.session_id))")
                 self.getUserID(self.appDelegate.sessionID.session_id!)
             }
             catch {print(error)}
@@ -207,7 +207,7 @@ class LoginViewController: UIViewController {
         let request = URLRequest(url: appDelegate.tmdbURLFromParameters(methodPerameters as [String:AnyObject], withPathExtension: "/account"))
         /* 4. Make the request */
         
-        print("** Request for user information = \(request)")
+        // print("** Request for user information = \(request)")
         let task = appDelegate.sharedSession.dataTask(with: request) { (data, urlResponse, error) in
 
             self.displayNetworkErrorsInDebugUI(data: data!, urlResponse: urlResponse!, error: error)
@@ -217,7 +217,7 @@ class LoginViewController: UIViewController {
                 let retrievedData = Data(data!)
                 let newAccount = try jsonDecoder.decode(Account.self, from: retrievedData)
                 self.appDelegate.account = newAccount
-                print("** new account = \(self.appDelegate.account)")
+                // print("** new account = \(self.appDelegate.account)")
                 self.completeLogin()
             }
             catch {print(error)}
