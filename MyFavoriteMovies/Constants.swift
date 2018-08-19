@@ -63,6 +63,11 @@ struct Constants {
         poster_sizes: ["w92", "w154", "w185", "w342", "w500", "w780", "original"],
         profile_sizes: ["w45", "w185", "h632", "original"]))
     
+    struct Headers {
+        static let favorite = ["content-type": "application/json;charset=utf-8"]
+        
+    }
+    
     // FIX: As of Swift 2.2, using strings for selectors has been deprecated. Instead, #selector(methodName) should be used.
     /*
      // MARK: Selectors

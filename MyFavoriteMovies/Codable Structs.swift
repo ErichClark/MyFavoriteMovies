@@ -90,3 +90,9 @@ struct Favorites: Codable {
     var total_pages: Int?
     var total_results: Int?
 }
+
+struct Favorite: Codable {
+        var media_type: String?
+        var media_id: String?
+        var favorite: Bool?
+}
