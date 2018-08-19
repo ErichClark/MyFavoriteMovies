@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		777D60D02128F5570048FAA5 /* Validate_With_Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 777D60CF2128F5570048FAA5 /* Validate_With_Login.swift */; };
+		777D60D22128FC0E0048FAA5 /* SessionID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 777D60D12128FC0E0048FAA5 /* SessionID.swift */; };
 		778148022127BF32003919C3 /* NetworkErrorGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778148012127BF32003919C3 /* NetworkErrorGuard.swift */; };
 		778148042127C12F003919C3 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778148032127C12F003919C3 /* Config.swift */; };
 		778148062128A879003919C3 /* Genres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778148052128A879003919C3 /* Genres.swift */; };
@@ -27,6 +29,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		777D60CF2128F5570048FAA5 /* Validate_With_Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validate_With_Login.swift; sourceTree = "<group>"; };
+		777D60D12128FC0E0048FAA5 /* SessionID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionID.swift; sourceTree = "<group>"; };
 		778148012127BF32003919C3 /* NetworkErrorGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkErrorGuard.swift; sourceTree = "<group>"; };
 		778148032127C12F003919C3 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		778148052128A879003919C3 /* Genres.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genres.swift; sourceTree = "<group>"; };
@@ -68,6 +72,8 @@
 				A9A3A2531BEC11F7009BE8E1 /* Movie.swift */,
 				A9A3A2451BEBFE21009BE8E1 /* BorderedButton.swift */,
 				778148072128CE2E003919C3 /* RequestToken.swift */,
+				777D60CF2128F5570048FAA5 /* Validate_With_Login.swift */,
+				777D60D12128FC0E0048FAA5 /* SessionID.swift */,
 			);
 			name = "Structs and Classes";
 			sourceTree = "<group>";
@@ -206,6 +212,7 @@
 			files = (
 				A9A3A2481BEBFE6F009BE8E1 /* LoginViewController.swift in Sources */,
 				A9A3A2321BEBE25C009BE8E1 /* AppDelegate.swift in Sources */,
+				777D60D02128F5570048FAA5 /* Validate_With_Login.swift in Sources */,
 				A9A3A2551BEC11F7009BE8E1 /* Movie.swift in Sources */,
 				A9A3A2461BEBFE21009BE8E1 /* BorderedButton.swift in Sources */,
 				A9A3A2501BEC11DE009BE8E1 /* GenreTableViewController.swift in Sources */,
@@ -214,6 +221,7 @@
 				A96C401A1BED0F5E00BA6803 /* Constants.swift in Sources */,
 				A9A3A2511BEC11DE009BE8E1 /* MovieDetailViewController.swift in Sources */,
 				778148082128CE2E003919C3 /* RequestToken.swift in Sources */,
+				777D60D22128FC0E0048FAA5 /* SessionID.swift in Sources */,
 				A9A3A2541BEC11F7009BE8E1 /* UpdateConfig.swift in Sources */,
 				A9A3A24F1BEC11DE009BE8E1 /* FavoritesTableViewController.swift in Sources */,
 				778148022127BF32003919C3 /* NetworkErrorGuard.swift in Sources */,

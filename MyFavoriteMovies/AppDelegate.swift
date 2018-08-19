@@ -19,7 +19,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var sharedSession = URLSession.shared
     var requestToken = RequestToken()
-    var sessionID: String? = nil
+    var validate_with_login = Validate_With_Login()
+    var sessionID = SessionID()
+
+    var username: String? = nil
+    var password: String? = nil
     var userID: Int? = nil
     var dateUpdated: Date? = nil
     

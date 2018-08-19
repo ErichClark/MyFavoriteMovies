@@ -64,7 +64,7 @@ class LoginViewController: UIViewController {
             // Step 1: Create a request token
             getRequestToken()
             // Step 2: Ask the user for permission via the API ("login")
-            loginWithToken(self.appDelegate.requestToken.request_token!)
+            
             // Step 3: Create a session ID
                 
             // Extra Steps...
@@ -109,6 +109,7 @@ class LoginViewController: UIViewController {
                 let newToken = try jsonDecoder.decode(RequestToken.self, from: retrievedData)
                 print("newToken = \(newToken)")
                 self.appDelegate.requestToken = newToken
+                self.loginWithToken(self.appDelegate.requestToken.request_token!)
                 if self.appDelegate.requestToken.success != true {
                     performUIUpdatesOnMain {
                         self.setUIEnabled(true)
@@ -118,7 +119,8 @@ class LoginViewController: UIViewController {
             }
             catch {print(error)}
         }
-
+        
+        
         /* 7. Start the request */
         task.resume()
     }
@@ -126,25 +128,68 @@ class LoginViewController: UIViewController {
     private func loginWithToken(_ request_token: String) {
         
         /* TASK: Login, then get a session id */
+        // https://www.themoviedb.org/authenticate/{REQUEST_TOKEN}
+        let username = self.appDelegate.username
+        let password = self.appDelegate.password
         
         /* 1. Set the parameters */
+        let methodPerameters: [String:Any] = [Constants.TMDBParameterKeys.ApiKey: Constants.TMDBParameterValues.ApiKey, Constants.TMDBParameterKeys.RequestToken: request_token, Constants.TMDBParameterKeys.Username: username!, Constants.TMDBParameterKeys.Password: password!]
         /* 2/3. Build the URL, Configure the request */
+        let request = URLRequest(url: appDelegate.tmdbURLFromParameters(methodPerameters as [String:AnyObject], withPathExtension: "/authentication/token/validate_with_login"))
+        
+        print("*** URL permission authentication - \(request) ")
         /* 4. Make the request */
-        /* 5. Parse the data */
-        /* 6. Use the data! */
+        let task = appDelegate.sharedSession.dataTask(with: request) {  (data, urlResponse, error) in
+            
+            self.displayNetworkErrorsInDebugUI(data: data!, urlResponse: urlResponse!, error: error)
+            
+            /* 5. Parse the data */
+            do {
+                let jsonDecoder = JSONDecoder()
+                let retrievedData = Data(data!)
+                let validationToken = try jsonDecoder.decode(Validate_With_Login.self, from: retrievedData)
+                print("*** validationToken = \(validationToken)")
+                /* 6. Use the data! */
+                self.appDelegate.validate_with_login = validationToken
+                self.getSessionID(self.appDelegate.validate_with_login.request_token!)
+            }
+            catch{print(error)}
+
+        }
         /* 7. Start the request */
+        task .resume()
     }
     
-    private func getSessionID(_ request_token: String) {
-        
+    private func getSessionID(_ validation_token: String) {
+        print("** Tried to get session id with \(validation_token)")
         /* TASK: Get a session ID, then store it (appDelegate.sessionID) and get the user's id */
         
         /* 1. Set the parameters */
+        let methodPerameters: [String:Any] = [Constants.TMDBParameterKeys.ApiKey: Constants.TMDBParameterValues.ApiKey, Constants.TMDBParameterKeys.RequestToken: self.appDelegate.validate_with_login.request_token!]
+        
         /* 2/3. Build the URL, Configure the request */
+        // "/authentication/session/new"
+        let request = URLRequest(url: appDelegate.tmdbURLFromParameters(methodPerameters as [String : AnyObject], withPathExtension: "/authentication/session/new"))
         /* 4. Make the request */
-        /* 5. Parse the data */
-        /* 6. Use the data! */
-        /* 7. Start the request */
+        print("** URL request for session ID = \(request)")
+        
+//        let task = appDelegate.sharedSession.dataTask(with: request) { (data, urlResponse, error) in
+//
+//            self.displayNetworkErrorsInDebugUI(data: data!, urlResponse: urlResponse!, error: error)
+//
+//            /* 5. Parse the data */
+//            do {
+//                let jsonDecoder = JSONDecoder()
+//                let retrievedData = Data(data!)
+//
+//            }
+//            catch {print(error)}
+//
+//
+//        }
+//        /* 6. Use the data! */
+//        /* 7. Start the request */
+//        task .resume()
     }
     
     private func getUserID(_ sessionID: String) {
@@ -208,6 +253,9 @@ extension LoginViewController: UITextFieldDelegate {
     }
     
     @IBAction func userDidTapView(_ sender: AnyObject) {
+        self.appDelegate.username = self.usernameTextField.text
+        self.appDelegate.password = self.passwordTextField.text
+        
         resignIfFirstResponder(usernameTextField)
         resignIfFirstResponder(passwordTextField)
     }
