@@ -22,7 +22,7 @@ class GenreTableViewController: UITableViewController {
     var config = Constants.defaultConfig
 
     // MARK: Tab Outlets
-
+    // They serve as handles to determine the current page view.
     @IBOutlet weak var ActionTab: UITabBarItem!
     @IBOutlet weak var SciFiTab: UITabBarItem!
     @IBOutlet weak var ComedyTab: UITabBarItem!
@@ -36,8 +36,6 @@ class GenreTableViewController: UITableViewController {
         appDelegate = UIApplication.shared.delegate as! AppDelegate
         config = appDelegate.config!
         account = appDelegate.account
-        
-        
 
         // create and set logout button
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .reply, target: self, action: #selector(logout))
