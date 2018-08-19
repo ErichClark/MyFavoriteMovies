@@ -18,8 +18,9 @@ class GenreTableViewController: UITableViewController {
     var movies = Movies()
     var genre = Genre()
     var id: Int? = nil
-    let config = UserDefaults.standard.object(forKey: "config") as! Config
-    
+    var config = Constants.defaultConfig
+
+
     // MARK: Life Cycle
     
     override func viewDidLoad() {
@@ -27,7 +28,8 @@ class GenreTableViewController: UITableViewController {
         
         // get the app delegate
         appDelegate = UIApplication.shared.delegate as! AppDelegate
-        
+        config = appDelegate.config!
+
         // get the correct genre id
         id = genre.id
         // create and set logout button

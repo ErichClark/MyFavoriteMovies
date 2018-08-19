@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		777D60D02128F5570048FAA5 /* Validate_With_Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 777D60CF2128F5570048FAA5 /* Validate_With_Login.swift */; };
 		777D60D22128FC0E0048FAA5 /* SessionID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 777D60D12128FC0E0048FAA5 /* SessionID.swift */; };
+		777D60D421290D330048FAA5 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 777D60D321290D330048FAA5 /* Account.swift */; };
 		778148022127BF32003919C3 /* NetworkErrorGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778148012127BF32003919C3 /* NetworkErrorGuard.swift */; };
 		778148042127C12F003919C3 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778148032127C12F003919C3 /* Config.swift */; };
 		778148062128A879003919C3 /* Genres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778148052128A879003919C3 /* Genres.swift */; };
@@ -31,6 +32,7 @@
 /* Begin PBXFileReference section */
 		777D60CF2128F5570048FAA5 /* Validate_With_Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validate_With_Login.swift; sourceTree = "<group>"; };
 		777D60D12128FC0E0048FAA5 /* SessionID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionID.swift; sourceTree = "<group>"; };
+		777D60D321290D330048FAA5 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		778148012127BF32003919C3 /* NetworkErrorGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkErrorGuard.swift; sourceTree = "<group>"; };
 		778148032127C12F003919C3 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		778148052128A879003919C3 /* Genres.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genres.swift; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 				778148072128CE2E003919C3 /* RequestToken.swift */,
 				777D60CF2128F5570048FAA5 /* Validate_With_Login.swift */,
 				777D60D12128FC0E0048FAA5 /* SessionID.swift */,
+				777D60D321290D330048FAA5 /* Account.swift */,
 			);
 			name = "Structs and Classes";
 			sourceTree = "<group>";
@@ -221,6 +224,7 @@
 				A96C401A1BED0F5E00BA6803 /* Constants.swift in Sources */,
 				A9A3A2511BEC11DE009BE8E1 /* MovieDetailViewController.swift in Sources */,
 				778148082128CE2E003919C3 /* RequestToken.swift in Sources */,
+				777D60D421290D330048FAA5 /* Account.swift in Sources */,
 				777D60D22128FC0E0048FAA5 /* SessionID.swift in Sources */,
 				A9A3A2541BEC11F7009BE8E1 /* UpdateConfig.swift in Sources */,
 				A9A3A24F1BEC11DE009BE8E1 /* FavoritesTableViewController.swift in Sources */,

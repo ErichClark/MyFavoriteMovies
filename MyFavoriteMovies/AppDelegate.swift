@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var requestToken = RequestToken()
     var validate_with_login = Validate_With_Login()
     var sessionID = SessionID()
-
+    var account = Account()
     var username: String? = nil
     var password: String? = nil
     var userID: Int? = nil

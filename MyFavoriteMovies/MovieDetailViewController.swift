@@ -17,7 +17,7 @@ class MovieDetailViewController: UIViewController {
     var appDelegate: AppDelegate!
     var isFavorite = false
     var movie: Movie?
-    let config = UserDefaults.standard.object(forKey: "config") as! Config
+    var config = Constants.defaultConfig
     
     // MARK: Outlets
     
@@ -33,6 +33,7 @@ class MovieDetailViewController: UIViewController {
         
         // get the app delegate
         appDelegate = UIApplication.shared.delegate as! AppDelegate
+        config = appDelegate.config!
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -49,7 +50,7 @@ class MovieDetailViewController: UIViewController {
             /* 1A. Set the parameters */
             let methodParameters = [
                 Constants.TMDBParameterKeys.ApiKey: Constants.TMDBParameterValues.ApiKey,
-                Constants.TMDBParameterKeys.SessionID: appDelegate.sessionID!
+                Constants.TMDBParameterKeys.SessionID: appDelegate.sessionID.session_id
             ]
             
             /* 2/3. Build the URL, Configure the request */

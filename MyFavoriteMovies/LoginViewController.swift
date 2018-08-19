@@ -16,6 +16,7 @@ class LoginViewController: UIViewController {
     
     var appDelegate: AppDelegate!
     var keyboardOnScreen = false
+    var config = Constants.defaultConfig
     
     // MARK: Outlets
     
@@ -32,6 +33,7 @@ class LoginViewController: UIViewController {
         
         // get the app delegate
         appDelegate = UIApplication.shared.delegate as! AppDelegate
+        config = appDelegate.config!
         
         configureUI()
         
@@ -157,7 +159,7 @@ class LoginViewController: UIViewController {
 
         }
         /* 7. Start the request */
-        task .resume()
+        task.resume()
     }
     
     private func getSessionID(_ validation_token: String) {
@@ -173,23 +175,26 @@ class LoginViewController: UIViewController {
         /* 4. Make the request */
         print("** URL request for session ID = \(request)")
         
-//        let task = appDelegate.sharedSession.dataTask(with: request) { (data, urlResponse, error) in
-//
-//            self.displayNetworkErrorsInDebugUI(data: data!, urlResponse: urlResponse!, error: error)
-//
-//            /* 5. Parse the data */
-//            do {
-//                let jsonDecoder = JSONDecoder()
-//                let retrievedData = Data(data!)
-//
-//            }
-//            catch {print(error)}
-//
-//
-//        }
-//        /* 6. Use the data! */
-//        /* 7. Start the request */
-//        task .resume()
+        let task = appDelegate.sharedSession.dataTask(with: request) { (data, urlResponse, error) in
+
+            self.displayNetworkErrorsInDebugUI(data: data!, urlResponse: urlResponse!, error: error)
+
+            /* 5. Parse the data */
+            do {
+                let jsonDecoder = JSONDecoder()
+                let retrievedData = Data(data!)
+                let newSessionID = try jsonDecoder.decode(SessionID.self, from: retrievedData)
+                self.appDelegate.sessionID = newSessionID
+                print("** session id = \(String(describing: self.appDelegate.sessionID.session_id))")
+                self.getUserID(self.appDelegate.sessionID.session_id!)
+            }
+            catch {print(error)}
+
+
+        }
+        /* 6. Use the data! */
+        /* 7. Start the request */
+        task.resume()
     }
     
     private func getUserID(_ sessionID: String) {
@@ -197,12 +202,33 @@ class LoginViewController: UIViewController {
         /* TASK: Get the user's ID, then store it (appDelegate.userID) for future use and go to next view! */
         
         /* 1. Set the parameters */
+        let methodPerameters: [String:Any] = [Constants.TMDBParameterKeys.ApiKey: Constants.TMDBParameterValues.ApiKey, Constants.TMDBParameterKeys.SessionID: self.appDelegate.sessionID.session_id!]
         /* 2/3. Build the URL, Configure the request */
+        let request = URLRequest(url: appDelegate.tmdbURLFromParameters(methodPerameters as [String:AnyObject], withPathExtension: "/account"))
         /* 4. Make the request */
+        
+        print("** Request for user information = \(request)")
+        let task = appDelegate.sharedSession.dataTask(with: request) { (data, urlResponse, error) in
+
+            self.displayNetworkErrorsInDebugUI(data: data!, urlResponse: urlResponse!, error: error)
+
+            do {
+                let jsonDecoder = JSONDecoder()
+                let retrievedData = Data(data!)
+                let newAccount = try jsonDecoder.decode(Account.self, from: retrievedData)
+                self.appDelegate.account = newAccount
+                print("** new account = \(self.appDelegate.account)")
+                self.completeLogin()
+            }
+            catch {print(error)}
+
+        }
         /* 5. Parse the data */
         /* 6. Use the data! */
         /* 7. Start the request */
+        task.resume()
     }
+    
 }
 
 // MARK: - LoginViewController: UITextFieldDelegate

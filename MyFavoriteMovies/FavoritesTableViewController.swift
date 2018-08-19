@@ -14,9 +14,9 @@ class FavoritesTableViewController: UITableViewController {
     
     // MARK: Properties
     
-    var appDelegate: AppDelegate!
+    var appDelegate = UIApplication.shared.delegate as! AppDelegate
     var movies = Movies()
-    let config = UserDefaults.standard.object(forKey: "config") as! Config
+    let config = Constants.defaultConfig
     
     // MARK: Life Cycle
     
@@ -25,6 +25,7 @@ class FavoritesTableViewController: UITableViewController {
         
         // get the app delegate
         appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let config = appDelegate.config
         
         // create and set logout button
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .reply, target: self, action: #selector(logout))
@@ -39,7 +40,7 @@ class FavoritesTableViewController: UITableViewController {
         /* 1. Set the parameters */
         let methodParameters = [
             Constants.TMDBParameterKeys.ApiKey: Constants.TMDBParameterValues.ApiKey,
-            Constants.TMDBParameterKeys.SessionID: appDelegate.sessionID!
+            Constants.TMDBParameterKeys.SessionID: appDelegate.sessionID.session_id
         ]
         
         /* 2/3. Build the URL, Configure the request */
