@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Foundation
 
 // MARK: - MovieDetailViewController: UIViewController
 
@@ -17,6 +18,8 @@ class MovieDetailViewController: UIViewController {
     var appDelegate: AppDelegate!
     var isFavorite = false
     var movie: Movie?
+    var favorites: Favorites?
+    var favoriteResponse: FavoriteResponse?
     var config = Constants.defaultConfig
     
     // MARK: Outlets
@@ -56,23 +59,30 @@ class MovieDetailViewController: UIViewController {
             /* 2/3. Build the URL, Configure the request */
             let request = NSMutableURLRequest(url: appDelegate.tmdbURLFromParameters(methodParameters as [String:AnyObject], withPathExtension: "/account/\(appDelegate.account.id!)/favorite/movies"))
             request.addValue("application/json", forHTTPHeaderField: "Accept")
-            
+            print("*** request for favorites data = \(request)")
             /* 4A. Make the request */
             let task = appDelegate.sharedSession.dataTask(with: request as URLRequest) { (data, urlResponse, error) in
                 
-                print("** favorite movies request: \(NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error))")
+                _ = NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error)
                 
                 /* 5A. Parse the data */
                 do {
                     let jsonDecoder = JSONDecoder()
                     let retrievedData = Data(data!)
-                    let movieResult = try jsonDecoder.decode(Movie.self, from: retrievedData)
-                    self.movie = movieResult
+                    let favoritesResult = try jsonDecoder.decode(Favorites.self, from: retrievedData)
+                    self.favorites = favoritesResult
+                    
+                    
                 }
                 catch {print(error)}
                 
                 /* 6A. Use the data! */
-                self.isFavorite = true
+                for item in (self.favorites?.results)! {
+                    print("*** This is a movie result = \(item)")
+                    if item.id == movie.id {
+                        self.isFavorite = true
+                    }
+                }
                 
                 performUIUpdatesOnMain {
                     self.favoriteButton.tintColor = (self.isFavorite) ? nil : .black
@@ -98,7 +108,7 @@ class MovieDetailViewController: UIViewController {
                 /* 4B. Make the request */
                 let task = appDelegate.sharedSession.dataTask(with: request) { (data, urlResponse, error) in
                     
-                    print("** poster path request: \(NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error))")
+                    _ = (NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error))
                     
                     /* 5B. Parse the data */
                     // No need, the data is already raw image data.
@@ -123,22 +133,51 @@ class MovieDetailViewController: UIViewController {
     
     @IBAction func toggleFavorite(_ sender: AnyObject) {
         
-        // let shouldFavorite = !isFavorite
+        isFavorite = !isFavorite
+        let favoriteMovieForPost = Favorite(media_type: "movie", media_id: movie?.id, favorite: isFavorite)
+        
+        var postData: Data? = nil
+        let parameters = [Constants.TMDBParameterKeys.ApiKey: Constants.TMDBParameterValues.ApiKey, Constants.TMDBParameterKeys.SessionID: appDelegate.sessionID.session_id!] as [String : Any]
         
         /* TASK: Add movie as favorite, then update favorite buttons */
         /* 1. Set the parameters */
-        /* 2/3. Build the URL, Configure the request */
+        let request = NSMutableURLRequest(url: appDelegate.tmdbURLFromParameters(parameters as [String : AnyObject], withPathExtension: "/account/\(appDelegate.account.id!)/favorite"), cachePolicy: .useProtocolCachePolicy, timeoutInterval: 10.0)
+        do {
+            let jsonEncoder = JSONEncoder()
+            postData = try jsonEncoder.encode(favoriteMovieForPost)
+        }
+        catch {print(error)}
+        
+        request.httpMethod = "POST"
+        request.allHTTPHeaderFields = Constants.Headers.favorite
+//        request.addValue("application/json;charset=utf-8", forHTTPHeaderField: "Accept")
+//        request.addValue("application/json;charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.httpBody = postData
+        // print("*** favorite post request = \(request)")
+        
+        let task = appDelegate.sharedSession.dataTask(with: request as URLRequest) { (data, urlResponse, error) in
+        
+            _ = NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error)
+            
+            do {
+                let jsonDecoder = JSONDecoder()
+                let retrievedData = Data(data!)
+                let newFavoriteResponse = try jsonDecoder.decode(FavoriteResponse.self, from: retrievedData)
+                print("** favorite response = \(String(describing: newFavoriteResponse))")
+            }
+            catch {print(error)}
+            /* 2/3. Build the URL, Configure the request */
         /* 4. Make the request */
         /* 5. Parse the data */
         /* 6. Use the data! */
         /* 7. Start the request */
         
-        /* If the favorite/unfavorite request completes, then use this code to update the UI...
-        
-        performUIUpdatesOnMain {
-            self.favoriteButton.tintColor = (shouldFavorite) ? nil : UIColor.blackColor()
+        // If the favorite/unfavorite request completes, then use this code to update the UI...
+         
+         performUIUpdatesOnMain {
+            self.favoriteButton.tintColor = (self.isFavorite) ? nil : UIColor.black
+         }
         }
-        
-        */
+        task.resume()
     }
 }

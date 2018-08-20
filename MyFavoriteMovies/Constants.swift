@@ -26,6 +26,7 @@ struct Constants {
         static let SessionID = "session_id"
         static let Username = "username"
         static let Password = "password"
+        static let Account = "account"
     }
     
     // MARK: TMDB Parameter Values
@@ -43,8 +44,8 @@ struct Constants {
         static let SessionID = "session_id"
         static let RequestToken = "request_token"
         static let Success = "success"
-        static let UserID = "id"
         static let Results = "results"
+        
     }
     
     // MARK: UI
@@ -64,7 +65,8 @@ struct Constants {
         profile_sizes: ["w45", "w185", "h632", "original"]))
     
     struct Headers {
-        static let favorite = ["content-type": "application/json;charset=utf-8"]
+        static let favorite = ["content-type": "application/json;charset=utf-8",
+                               "accept": "application/json;charset=utf-8"]
         
     }
     

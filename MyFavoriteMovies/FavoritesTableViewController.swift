@@ -53,7 +53,7 @@ class FavoritesTableViewController: UITableViewController {
         /* 4. Make the request */
         let task = appDelegate.sharedSession.dataTask(with: request as URLRequest) { (data, urlResponse, error) in
             
-            print("** FavoriteMovies request: \(NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error))")
+            _ = NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error)
             
             /* 5. Parse the data */
             do {
@@ -114,7 +114,7 @@ extension FavoritesTableViewController {
             /* 4. Make the request */
             let task = appDelegate.sharedSession.dataTask(with: request) { (data, urlResponse, error) in
                 
-                print("** poster_path request: \(NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error))")
+                _ = NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error)
                 
                 /* 5. Parse the data */
                 // No need, the data is already raw image data.

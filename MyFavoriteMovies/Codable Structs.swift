@@ -70,8 +70,8 @@ struct Movies: Codable {
 }
 
 struct Movie: Codable {
-    let title: String
-    let id: Int
+    let title: String?
+    let id: Int?
     let poster_path: String?
     
 }
@@ -93,6 +93,11 @@ struct Favorites: Codable {
 
 struct Favorite: Codable {
         var media_type: String?
-        var media_id: String?
+        var media_id: Int?
         var favorite: Bool?
+}
+
+struct FavoriteResponse: Codable {
+    var status_code: Int?
+    var status_message: String?
 }

@@ -35,18 +35,18 @@ extension AppDelegate {
         let request = NSMutableURLRequest(url: appDelegate.tmdbURLFromParameters(methodParameters as [String:AnyObject], withPathExtension: "/configuration"))
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
-        print("*** request *** \(request)")
+        // print("*** request *** \(request)")
         /* 4. Make the request */
         let task = appDelegate.sharedSession.dataTask(with: request as URLRequest) { (data, urlResponse, error) in
             
             /* 5. Parse the data, handle errors  */
-            print("** Config request: \(NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error))")
+            _ = NetworkErrorGuard(data: data, urlResponse: urlResponse!, error: error)
             
             do {
                 let jsonDecoder = JSONDecoder()
                 let retrievedData = Data(data!)
                 let newConfig = try jsonDecoder.decode(Config.self, from: retrievedData)
-                print("*** newConfig *** = \(newConfig)")
+                // print("*** newConfig *** = \(newConfig)")
                 /* 6. Use the data! See below. */
                 self.save(newConfig)
             }
@@ -61,14 +61,14 @@ extension AppDelegate {
     private func save(_ newConfig: Config) {
         do {
             let plistURL = URL(fileURLWithPath: "config", relativeTo: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first! as URL).appendingPathExtension("plist")
-            print("*** plistURL *** = \(plistURL)")
+            // print("*** plistURL *** = \(plistURL)")
             let plistEncoder = PropertyListEncoder()
             let newConfigPlist = try plistEncoder.encode(newConfig)
             try newConfigPlist.write(to: plistURL)
         
             // Save the date
             defaults.set(Date(), forKey: "lastUpdate")
-            print("*** date last updated *** = \(String(describing: defaults.object(forKey: "lastUpdate")))")
+            print("*** date config last updated *** = \(String(describing: defaults.object(forKey: "lastUpdate")))")
         }
         catch {print(error)}
     }
